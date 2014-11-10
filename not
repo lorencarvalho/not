@@ -1,6 +1,19 @@
 #!/usr/bin/env python
 
-from notpy import Not
+import argparse
+import tempfile
+from subprocess import call
+from notpy import Notary, config
 
-notpy = Not()
-notpy.init()
+authtoken = config.DEVTOKEN
+n = Notary(authtoken)
+
+
+def newnote():
+    with tempfile.NamedTemporaryFile(suffix=".tmp") as f:
+        call([config.EDITOR, f.name])
+        n.makenote(open(f.name).read())
+
+
+if __name__ == '__main__':
+    newnote()

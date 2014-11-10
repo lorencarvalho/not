@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup
+
+reqs = open('requirements.txt', 'r').readlines()
 
 setup(name='not',
       author='Loren Carvalho',
-      version='0.0.1',
+      author_email='comradeloren[at]gmail.com',
+      url='http://hullcrushdepth.com',
+      version='0.0.2',
       packages=['notpy'],
-      scripts=['not']
+      scripts=['not'],
+      install_requires=reqs
       )

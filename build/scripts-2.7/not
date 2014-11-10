@@ -1,6 +1,5 @@
-#!/usr/bin/python
+#!/Users/loren/not/venv/bin/python
 
-from notpy import Not
+from notpy import *
 
-notpy = Not()
-notpy.init()
+notary()
