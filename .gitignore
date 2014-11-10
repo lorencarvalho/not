@@ -1,4 +1,6 @@
+venv
 build
 dist
-*.swp
+*.sw*
+*.pyc    
 MANIFEST
