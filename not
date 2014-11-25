@@ -2,18 +2,21 @@
 
 import argparse
 import tempfile
+from datetime import date
 from subprocess import call
 from notpy import Notary, config
 
 authtoken = config.DEVTOKEN
 n = Notary(authtoken)
 
+def main():
+    parser = argparse.ArgumentParser(description='not')
+    parser.add_argument('title', nargs='?', default=str(date.today()))
+    args = vars(parser.parse_args())
 
-def newnote():
     with tempfile.NamedTemporaryFile(suffix=".tmp") as f:
         call([config.EDITOR, f.name])
-        n.makenote(open(f.name).read())
-
+        n.save(open(f.name).read(), title)
 
 if __name__ == '__main__':
-    newnote()
+    main()

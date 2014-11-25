@@ -1,5 +1,0 @@
-#!/Users/loren/not/venv/bin/python
-
-from notpy import *
-
-notary()
