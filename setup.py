@@ -9,7 +9,7 @@ setup(name='not',
       author_email='comradeloren[at]gmail.com',
       url='http://hullcrushdepth.com',
       version='0.0.2',
-      packages=['notpy', 'evernote'],
+      packages=['notpy'],
       scripts=['not'],
       install_requires=reqs
       )

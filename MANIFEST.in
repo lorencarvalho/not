@@ -1,2 +1,0 @@
-include not README.md
-recursive-include not/ *
