@@ -2,6 +2,7 @@
 
 import argparse
 import tempfile
+import re
 from datetime import date
 from subprocess import call
 from notpy import Notary, config
@@ -15,6 +16,12 @@ def main():
     args = vars(parser.parse_args())
 
     with tempfile.NamedTemporaryFile(suffix=".tmp") as f:
+        if args['title']:
+            note_guid = n.search(args['title'])
+            if note_guid:
+                content = re.sub("<.*?>", " ", n.get_content(note_guid))
+                open(f.name, 'w').write(content)
+                
         call([config.EDITOR, f.name])
         n.save(open(f.name).read(), title=args['title'])
 

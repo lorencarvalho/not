@@ -21,21 +21,26 @@ class Notary(object):
         self.store = client.get_note_store()
         self.notefilter = NoteStore.NoteFilter()
 
+    def get_content(self, note_guid):
+        note = self.store.getNote(note_guid, True, False, False, False)
+        return note.content
+        
+
     def search(self, title):
         try:
             # evernote's api is ridiculous
             self.notefilter.words = 'intitle:"{0}"'.format(title)
             notes_metadata_result_spec = NoteStore.NotesMetadataResultSpec()
             notes_metadata_list = self.store.findNotesMetadata(self.notefilter, 0, 1, notes_metadata_result_spec)
-            note_guid = notes_metadata_list.notes[0].guid
-            note = self.store.getNote(note_guid, True, False, False, False)
-            return note_guid
+            self.note_guid = notes_metadata_list.notes[0].guid
+            # note = self.store.getNote(self.note_guid, True, False, False, False)
+            return self.note_guid
         except:
-            pass
+            return False
 
     def save(self, body, title):
         if self.search(title):
-            self.note = self.store.getNote(note_guid, True, False, False, False)
+            self.note = self.store.getNote(self.note_guid, True, False, False, False)
             save_it = self.store.updateNote
         else:
             self.note = Types.Note()
