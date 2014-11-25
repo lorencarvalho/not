@@ -24,7 +24,6 @@ class Notary(object):
     def get_content(self, note_guid):
         note = self.store.getNote(note_guid, True, False, False, False)
         return note.content
-        
 
     def search(self, title):
         try:
