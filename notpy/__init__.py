@@ -13,7 +13,7 @@ from evernote.api.client import EvernoteClient
 import evernote.edam.type.ttypes as Types
 import evernote.edam.notestore.ttypes as NoteStore
 
-client = EvernoteClient(token=config.DEVTOKEN)
+client = EvernoteClient(token=config.TOKEN)
 
 class Notary(object):
     def __init__(self, authtoken):
