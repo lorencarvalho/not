@@ -12,7 +12,7 @@ from datetime import date
 from subprocess import call
 from notpy import Notary, config
 
-authtoken = config.DEVTOKEN
+authtoken = config.TOKEN
 n = Notary(authtoken)
 
 
@@ -33,7 +33,8 @@ def md5sum(f):
 def check_existing(title, f):
     note = n.search(title)
     if note:
-        content = re.sub('<.*?>', '', n.get_content(note))
+        content = re.sub('<br/>', '\n',n.get_content(note))
+        content = re.sub('<.*?>', '', content)
         open(f, 'w').write(content)
     return f
 
