@@ -13,9 +13,9 @@ setup(name='not',
       install_requires=reqs,
 
       entry_points={
-          'console_script': [
+          'console_scripts': [
               'not = notpy.cmd:cli',
-              'not-setup = notpy.cmd:setup'
+              'not-setup = notpy.oauth:setup'
               ]
           }
       )
