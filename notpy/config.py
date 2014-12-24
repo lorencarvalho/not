@@ -2,5 +2,15 @@
 
 import os
 
+def token():
+    try:
+        return open(os.path.join(os.environ.get['HOME'], '.not_token')).read()
+    except Exception as e:
+        return 'No token! run not-setup! {0}'.format(e)
+
 EDITOR = os.environ.get('EDITOR', 'vim')
-TOKEN = 'S=s1:U=8fd7d:E=150ef36c4f6:C=14997859738:P=1cd:A=en-devtoken:V=2:H=35b941e7c4415097f91376d48469dd58'
+TOKEN = token()
+
+USER_BASE_URL = "www.evernote.com"
+CONSUMER_KEY = 'comradeloren'
+CONSUMER_SECRET = 'c219754d19198564'

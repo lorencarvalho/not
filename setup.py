@@ -8,8 +8,14 @@ setup(name='not',
       author='Loren Carvalho',
       author_email='comradeloren[at]gmail.com',
       url='http://hullcrushdepth.com',
-      version='0.0.2',
+      version='0.0.4',
       packages=['notpy'],
-      scripts=['not'],
-      install_requires=reqs
+      install_requires=reqs,
+
+      entry_points={
+          'console_script': [
+              'not = notpy.cmd:cli',
+              'not-setup = notpy.cmd:setup'
+              ]
+          }
       )

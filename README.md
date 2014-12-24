@@ -7,13 +7,15 @@ i just want to scratch down some crap in vi and save it somewhere safe and synce
 
 geeknote is cool (and largely inspired not), but it's super feature rich and requires extra brain workyness
 
-i just want to scratch something down in vi and be done with it
+`not "some note"` and I'm done
 
-### usage
+### install
 python setup.py install
 
+
+### usage
 `not` -- creates or updates a note using your favorite linux editor, stored in default notebook, named after today's date
 
 `not some_title` same thing, but instead of todays date it's whatever custom title you wrote
 
-all notes are plaintext, the only formatting i care about is linebreaks and i handle it really shittily
+all notes are plaintext
