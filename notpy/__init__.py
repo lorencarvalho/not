@@ -1,30 +1,36 @@
 #!/usr/bin/env python
-
-# stdlib
+'''
+provides NotClient, the subclassed evernote client
+'''
 import os
 import sys
 from datetime import date
 
-# not
-import config
-
-# evernote
+# evernote imports
 from evernote.api.client import EvernoteClient
 from evernote.edam.notestore.ttypes import NoteFilter, NotesMetadataResultSpec
 import evernote.edam.type.ttypes as Types
 
-#client = EvernoteClient(token=config.TOKEN, sandbox=False)
 
 class NotClient(EvernoteClient):
     def __init__(self, *args, **kwargs):
+        '''
+        subclass evernote client and get a note store obj
+        '''
         super(NotClient, self).__init__(*args, **kwargs)
         self.note_store = self.get_note_store()
 
     def get_content(self, note_guid):
+        '''
+        get the actual contents of a note based on guid
+        '''
         note = self.note_store.getNote(note_guid, True, False, False, False)
         return note.content
 
     def search(self, title):
+        '''
+        bumble through evernote's api to find a note
+        '''
         try:
             # evernote's api is ridiculous
             filter = NoteFilter(words="intitle:'{0}'".format(title))

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-
+'''
+this module provides not-setup and does
+the oauth stuff for initial access to evernote
+'''
 import config
 import os
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 '''
 command module for Not
+provides the `not` executable
 hint: 'f' always refers to the temp file
       'n' is the evernote api wrapper "notpy.Note()"
 '''
@@ -14,9 +15,9 @@ from notpy import NotClient, config
 
 try:
     not_client = NotClient(token=config.TOKEN, sandbox=False)
-except Exception as e:
-    print "need to run not-setup"
-    print e
+except:
+    print "bailing!"
+    print "you may need to run `not-setup` and try again"
     import sys; sys.exit(1)
 
 
