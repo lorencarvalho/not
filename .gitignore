@@ -4,5 +4,6 @@ build
 dist
 *.sw*
 *.pyc    
+*/*.pyc
 MANIFEST
 not.egg-info/

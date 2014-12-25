@@ -13,7 +13,7 @@ from subprocess import call
 from notpy import NotClient, config
 
 try:
-    not_client = NotClient()
+    not_client = NotClient(token=config.TOKEN, sandbox=False)
 except Exception as e:
     print "need to run not-setup"
     print e
@@ -51,6 +51,6 @@ def cli():
     with tempfile.NamedTemporaryFile() as f:
         check_existing(args['title'], f.name)
         md5 = md5sum(f.name)
-        call([config.EDITOR, f])
+        call([config.EDITOR, f.name])
         if md5sum(f.name) != md5:
-            not_clien.save(open(f.name).read(), title=args['title'])
+            not_client.save(open(f.name).read(), title=args['title'])
