@@ -13,11 +13,10 @@ from evernote.api.client import EvernoteClient
 import evernote.edam.type.ttypes as Types
 import evernote.edam.notestore.ttypes as NoteStore
 
-client = EvernoteClient(token=config.TOKEN)
 
-class Note(object):
-    def __init__(self, authtoken):
-        self.authtoken = authtoken
+class NotClient(object):
+    def __init__(self):
+        client = EvernoteClient(token=config.TOKEN, Sandbox=False)
         self.store = client.get_note_store()
         self.notefilter = NoteStore.NoteFilter()
 
@@ -29,8 +28,8 @@ class Note(object):
         try:
             # evernote's api is ridiculous
             self.notefilter.words = 'intitle:"{0}"'.format(title)
-            note_guid = self.store.findNotesMetadata(self.notefilter, 
-                                                     0, 1, 
+            note_guid = self.store.findNotesMetadata(self.notefilter,
+                                                     0, 1,
                                                      NoteStore.NotesMetadataResultSpec()
                                                      ).notes[0].guid
             return note_guid

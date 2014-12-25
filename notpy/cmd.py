@@ -10,13 +10,13 @@ import tempfile
 import re
 from datetime import date
 from subprocess import call
-from notpy import Note, config
+from notpy import NotClient, config
 
-authtoken = config.TOKEN
 try:
-    n = Note(authtoken)
+    not_client = NotClient()
 except Exception as e:
     print "need to run not-setup"
+    print e
     import sys; sys.exit(1)
 
 
@@ -32,7 +32,7 @@ def check_existing(title, f):
     checks if your note already exists based on title
     if it does, grabs the contents so we can append
     '''
-    note = n.search(title)
+    note = not_client.search(title)
     if note:
         content = re.sub('<br/>', '\n',n.get_content(note))
         content = re.sub('<.*?>', '', content)
@@ -53,4 +53,4 @@ def cli():
         md5 = md5sum(f.name)
         call([config.EDITOR, f])
         if md5sum(f.name) != md5:
-            n.save(open(f.name).read(), title=args['title'])
+            not_clien.save(open(f.name).read(), title=args['title'])
