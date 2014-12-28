@@ -13,6 +13,7 @@ i just want to scratch down some crap in vi and save it somewhere safe and synce
 
 ### install
 `python setup.py install`
+
 `not-setup`
 
 
