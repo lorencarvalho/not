@@ -12,7 +12,7 @@ i just want to scratch down some crap in vi and save it somewhere safe and synce
 `not` and I'm done
 
 ### install
-python setup.py install
+`python setup.py install`
 
 
 ### usage
