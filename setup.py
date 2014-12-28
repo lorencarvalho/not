@@ -8,7 +8,7 @@ setup(name='not',
       author='Loren Carvalho',
       author_email='comradeloren[at]gmail.com',
       url='http://hullcrushdepth.com',
-      version='0.0.4',
+      version='1.0',
       packages=['notpy'],
       install_requires=reqs,
 

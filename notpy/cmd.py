@@ -35,8 +35,9 @@ def check_existing(title, f):
     '''
     note = not_client.search(title)
     if note:
-        content = re.sub('<br/>', '\n',n.get_content(note))
+        content = re.sub('<br/>', '\n',not_client.get_content(note))
         content = re.sub('<.*?>', '', content)
+        content = content + '\n---\n\n'
         open(f, 'w').write(content)
     return f
 
@@ -52,6 +53,6 @@ def cli():
     with tempfile.NamedTemporaryFile() as f:
         check_existing(args['title'], f.name)
         md5 = md5sum(f.name)
-        call([config.EDITOR, f.name])
+        call([config.EDITOR, '+', f.name])
         if md5sum(f.name) != md5:
             not_client.save(open(f.name).read(), title=args['title'])

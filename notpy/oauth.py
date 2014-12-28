@@ -65,6 +65,8 @@ def setup():
     request_token = client.get_request_token('http://localhost:10668')
     print "Paste this URL in your browser and login:"
     print '  ', client.get_authorize_url(request_token)
+    print '\n\n Be advised, this will save your oauth token in plaintext to ~/.not_token !'
+    print 'if you aren\'t cool with that, ctrl-c now and never return!'
     serve_one_request().handle_request()
     authurl = path
     vals = parse_query_string(authurl)

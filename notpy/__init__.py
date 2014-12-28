@@ -4,6 +4,7 @@ provides NotClient, the subclassed evernote client
 '''
 import os
 import sys
+import re
 from datetime import date
 
 # evernote imports
@@ -57,6 +58,8 @@ class NotClient(EvernoteClient):
         note.content = '<?xml version="1.0" encoding="UTF-8"?>'
         note.content += '<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">'
         note.content += '<en-note>{0}</en-note>'.format(body)
+        note.content = re.sub('\n', '<br/>', note.content)
+        
 
         # save new note or update existing
         save_it(note)
