@@ -14,6 +14,8 @@ i just want to scratch down some crap in vi and save it somewhere safe and synce
 ### install
 `python setup.py install`
 
+`not-setup`
+
 
 ### usage
 `not` -- creates or updates a note using your favorite editor, stored in default notebook, named after today's date
