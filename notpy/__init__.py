@@ -52,14 +52,20 @@ class NotClient(EvernoteClient):
         else:
             note = Types.Note()
             save_it = self.note_store.createNote
-        
+
+        # look for and save tags:
+        if '\n' in body:
+            ll = body.split('\n')[-1]
+            if ll.startswith('tags:'):
+                note.tagNames = [x.replace(' ','') for x in ll.replace('tags:','').split(',')]
+
         # evernotes special markup:
         note.title = title
         note.content = '<?xml version="1.0" encoding="UTF-8"?>'
         note.content += '<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">'
         note.content += '<en-note>{0}</en-note>'.format(body)
         note.content = re.sub('\n', '<br/>', note.content)
-        
+
 
         # save new note or update existing
         save_it(note)

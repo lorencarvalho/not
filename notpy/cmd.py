@@ -37,7 +37,7 @@ def check_existing(title, f):
     if note:
         content = re.sub('<br/>', '\n',not_client.get_content(note))
         content = re.sub('<.*?>', '', content)
-        content = content + '\n'
+        #content = content + '\n'
         open(f, 'w').write(content)
     return f
 
@@ -55,4 +55,4 @@ def cli():
         md5 = md5sum(f.name)
         call([config.EDITOR, '+', f.name])
         if md5sum(f.name) != md5:
-            not_client.save(open(f.name).read(), title=args['title'])
+            not_client.save(open(f.name).read().strip(), title=args['title'])
