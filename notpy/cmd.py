@@ -37,7 +37,7 @@ def check_existing(title, f):
     if note:
         content = re.sub('<br/>', '\n',not_client.get_content(note))
         content = re.sub('<.*?>', '', content)
-        content = content + '\n---\n\n'
+        content = content + '\n'
         open(f, 'w').write(content)
     return f
 
