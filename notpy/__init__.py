@@ -41,6 +41,11 @@ class NotClient(EvernoteClient):
         except:
             return False
 
+    def check_tags(self, body):
+        for line in body.split('\n'):
+            if line.startswith('tags:'):
+                return line.split('tags:')[1].replace(' ','').split(',')
+
     def save(self, body, title):
         '''
         if the note exists, update it
@@ -54,10 +59,7 @@ class NotClient(EvernoteClient):
             save_it = self.note_store.createNote
 
         # look for and save tags:
-        if '\n' in body:
-            ll = body.split('\n')[-1]
-            if ll.startswith('tags:'):
-                note.tagNames = [x.replace(' ','') for x in ll.replace('tags:','').split(',')]
+        note.tagNames = self.check_tags(body)
 
         # evernotes special markup:
         note.title = title
