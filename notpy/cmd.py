@@ -50,7 +50,7 @@ def cli():
     parser.add_argument('title', nargs='?', default=str(date.today()))
     args = vars(parser.parse_args())
 
-    with tempfile.NamedTemporaryFile() as f:
+    with tempfile.NamedTemporaryFile(suffix=config.SUFFIX) as f:
         check_existing(args['title'], f.name)
         md5 = md5sum(f.name)
         call([config.EDITOR, '+', f.name])
