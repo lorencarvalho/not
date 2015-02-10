@@ -55,10 +55,10 @@ def cli():
         md5 = md5sum(f.name)
         call([config.EDITOR, '+', f.name])
         if md5sum(f.name) != md5:
-          guts = f.read().strip()
-          try:
-              not_client.save(guts, title=args['title'])
-          except Exception as e:
-              print 'failed to save note! {0}'.format(e)
-              print 'unsaved note:'
-              print guts
+            guts = f.read().strip()
+            try:
+                not_client.save(guts, title=args['title'])
+            except Exception as e:
+                print 'failed to save note! {0}'.format(e)
+                print 'unsaved note:'
+                print guts
