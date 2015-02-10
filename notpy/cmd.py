@@ -55,7 +55,7 @@ def cli():
         md5 = md5sum(f.name)
         call([config.EDITOR, '+', f.name])
         if md5sum(f.name) != md5:
-            guts = f.read().strip()
+            guts = open(f.name).read().strip()
             try:
                 not_client.save(guts, title=args['title'])
             except Exception as e:
