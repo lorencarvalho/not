@@ -42,6 +42,13 @@ def check_existing(title, f):
     return f
 
 
+def note_save_error(e, guts):
+    print 'failed to save note!\n\n'
+    print 'exception was: {0}\n\n'.format(e)
+    print 'contents of unsaved note: \n\n'
+    print guts
+
+
 def cli():
     '''
     opens or creates the note, uses today's date or an explicit title
@@ -59,6 +66,4 @@ def cli():
             try:
                 not_client.save(guts, title=args['title'])
             except Exception as e:
-                print 'failed to save note! {0}'.format(e)
-                print 'unsaved note:'
-                print guts
+                note_save_error(e, guts)
