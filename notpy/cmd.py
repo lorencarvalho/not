@@ -9,6 +9,7 @@ import argparse
 import hashlib
 import tempfile
 import re
+import sys
 from datetime import date
 from subprocess import call
 from notpy import NotClient, config
@@ -18,7 +19,7 @@ try:
 except:
     print "bailing!"
     print "you may need to run `not-setup` and try again"
-    import sys; sys.exit(1)
+    sys.exit(1)
 
 
 def md5sum(f):
@@ -28,6 +29,15 @@ def md5sum(f):
     return hashlib.md5(open(f).read()).hexdigest()
 
 
+def format_to_plain_text(content):
+    '''
+    Given the contents of an existing note, strip out all the HTML tags
+    '''
+    content = re.sub('<br/>', '\n', content)
+    content = re.sub('<.*?>', '', content)
+    return content
+
+
 def check_existing(title, f):
     '''
     checks if your note already exists based on title
@@ -35,9 +45,7 @@ def check_existing(title, f):
     '''
     note = not_client.search(title)
     if note:
-        content = re.sub('<br/>', '\n',not_client.get_content(note))
-        content = re.sub('<.*?>', '', content)
-        #content = content + '\n'
+        content = format_to_plain_text(not_client.get_content(note))
         open(f, 'w').write(content)
     return f
 
@@ -57,13 +65,30 @@ def cli():
     parser.add_argument('title', nargs='?', default=str(date.today()))
     args = vars(parser.parse_args())
 
-    with tempfile.NamedTemporaryFile(suffix=config.SUFFIX) as f:
-        check_existing(args['title'], f.name)
-        md5 = md5sum(f.name)
-        call([config.EDITOR, '+', f.name])
-        if md5sum(f.name) != md5:
-            guts = open(f.name).read().strip()
-            try:
-                not_client.save(guts, title=args['title'])
-            except Exception as e:
-                note_save_error(e, guts)
+    if sys.stdin.isatty():
+        # Nothing is being piped in, so open a file and let the user edit it
+        with tempfile.NamedTemporaryFile(suffix=config.SUFFIX) as f:
+            check_existing(args['title'], f.name)
+            md5 = md5sum(f.name)
+            call([config.EDITOR, '+', f.name])
+            if md5sum(f.name) != md5:
+                guts = open(f.name).read().strip()
+                try:
+                    not_client.save(guts, title=args['title'])
+                except Exception as e:
+                    note_save_error(e, guts)
+    else:
+        # The user is trying to pipe things in through stdin
+        existing_note_guid = not_client.search(args['title'])
+        if existing_note_guid:
+            content = format_to_plain_text(
+                not_client.get_content(existing_note_guid))
+        else:
+            content = ''
+
+        content += '\n'.join(line for line in sys.stdin)
+
+        try:
+            not_client.save(content, title=args['title'])
+        except Exception as e:
+            note_save_error(e, content)
