@@ -81,7 +81,7 @@ def cli():
         # The user is trying to pipe things in through stdin
         existing_note_guid = not_client.search(args['title'])
         if existing_note_guid:
-            content = format_to_plain_text(
+            content = '\n' + format_to_plain_text(
                 not_client.get_content(existing_note_guid))
         else:
             content = ''
