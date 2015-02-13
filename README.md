@@ -22,7 +22,9 @@ i just want to scratch down some crap in vi and save it somewhere safe and synce
 
 `not some_title` same thing, but instead of todays date it's whatever custom title you wrote
 
-`not` also supports input through standard input: `echo 'piping stuff in through stdin works too!' | not`
+piping via stdin also works for ultimate lazyness:
+
+`echo 'wow I am so lazy' | not`
 
 to add tags, simply add a line to your note that starts with "tags:" and then a comma separated list
 for example: `tags: these,are,tags`
