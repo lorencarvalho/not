@@ -88,7 +88,13 @@ def cli():
 
         content += '\n'.join(line for line in sys.stdin)
 
-        try:
-            not_client.save(content, title=args['title'])
-        except Exception as e:
-            note_save_error(e, content)
+        for attempt in range(0, 2):
+            try:
+                not_client.save(content, title=args['title'])
+            except Exception as e:
+                # note_save_error(e, content)
+                # dirty hack to re-init the client after a while
+                not_client = NotClient(token=config.TOKEN, sandbox=False)
+                not_client.save(content, title=args['title'])
+        else:
+            pass
