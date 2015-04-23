@@ -8,18 +8,32 @@ hint: 'f' always refers to the temp file
 import argparse
 import hashlib
 import tempfile
-import re
 import sys
+import logging
 from datetime import date
 from subprocess import call
-from notpy import NotClient, config
+from notpy import NotClient, config, NoteSaveError
 
-try:
-    not_client = NotClient(token=config.TOKEN, sandbox=False)
-except:
-    print "bailing!"
-    print "you may need to run `not-setup` and try again"
-    sys.exit(1)
+_DEFAULT_LOGLEVEL = 'WARN'
+logger = None
+
+def setup_logging(l):
+    try:
+        level = getattr(logging, l.upper())
+    except AttributeError:
+        level = getattr(logging, _DEFAULT_LOGLEVEL)
+
+    logging.basicConfig(level=level)
+    global logger
+    logger = logging.getLogger(__name__)
+    logger.debug("Successfully set up logger at {0} level".format(logging.getLevelName(level)))
+
+def setup_client():
+    try:
+        return NotClient(token=config.TOKEN, sandbox=False)
+    except:
+        logger.critical("Unable to setup NotClient\nYou may need to run `not-setup` and try again")
+        sys.exit(1)
 
 
 def md5sum(f):
@@ -29,60 +43,41 @@ def md5sum(f):
     return hashlib.md5(open(f).read()).hexdigest()
 
 
-def format_to_plain_text(content):
-    '''
-    Given the contents of an existing note, strip out all the HTML tags
-    '''
-    content = re.sub('<br/>', '\n', content)
-    content = re.sub('<.*?>', '', content)
-    return content
-
-
-def check_existing(title, f):
-    '''
-    checks if your note already exists based on title
-    if it does, grabs the contents so we can append
-    '''
-    note = not_client.search(title)
-    if note:
-        content = format_to_plain_text(not_client.get_content(note))
-        open(f, 'w').write(content)
-    return f
-
-
-def note_save_error(e, guts):
-    print 'failed to save note!\n\n'
-    print 'exception was: {0}\n\n'.format(e)
-    print 'contents of unsaved note: \n\n'
-    print guts
-
-
 def cli():
     '''
     opens or creates the note, uses today's date or an explicit title
     '''
     parser = argparse.ArgumentParser(description='not')
     parser.add_argument('title', nargs='?', default=str(date.today()))
+    parser.add_argument('-l', '--loglevel', default=_DEFAULT_LOGLEVEL, help=argparse.SUPPRESS)
     args = vars(parser.parse_args())
+
+    # Do setup stuff
+    setup_logging(args['loglevel'])
+    not_client = setup_client()
 
     if sys.stdin.isatty():
         # Nothing is being piped in, so open a file and let the user edit it
         with tempfile.NamedTemporaryFile(suffix=config.SUFFIX) as f:
-            check_existing(args['title'], f.name)
+            logger.debug("Created temp file at {0}".format(f.name))
+            note_id = not_client.search(args['title'])
+            logger.debug("Note ID found: {0}".format(note_id))
+            if note_id:
+                content = not_client.get_content(note_id)
+                logger.debug("Got content: {0}".format(content))
+                f.write(content)
+                f.flush()
+
             md5 = md5sum(f.name)
             call([config.EDITOR, '+', f.name])
             if md5sum(f.name) != md5:
                 guts = open(f.name).read().strip()
-                try:
-                    not_client.save(guts, title=args['title'])
-                except Exception as e:
-                    note_save_error(e, guts)
+                not_client.save(guts, title=args['title'])
     else:
         # The user is trying to pipe things in through stdin
         existing_note_guid = not_client.search(args['title'])
         if existing_note_guid:
-            content = '\n' + format_to_plain_text(
-                not_client.get_content(existing_note_guid))
+            content = not_client.get_content(existing_note_guid)
         else:
             content = ''
 
@@ -91,7 +86,7 @@ def cli():
         for attempt in range(0, 2):
             try:
                 not_client.save(content, title=args['title'])
-            except Exception as e:
+            except NoteSaveError as e:
                 # note_save_error(e, content)
                 # dirty hack to re-init the client after a while
                 not_client = NotClient(token=config.TOKEN, sandbox=False)
