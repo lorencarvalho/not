@@ -49,7 +49,7 @@ def cli():
     '''
     parser = argparse.ArgumentParser(description='not')
     parser.add_argument('title', nargs='?', default=str(date.today()))
-    parser.add_argument('-l', '--loglevel', default=_DEFAULT_LOGLEVEL)
+    parser.add_argument('-l', '--loglevel', default=_DEFAULT_LOGLEVEL, help=argparse.SUPPRESS)
     args = vars(parser.parse_args())
 
     # Do setup stuff
