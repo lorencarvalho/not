@@ -13,6 +13,10 @@ import evernote.edam.type.ttypes as Types
 
 class NoteSaveError(Exception):
     def __init__(self, original_exc, note_contents=''):
+        '''
+        return a cleanly formatted exception but also
+        print the unsaved note to stdout
+        '''
         message = "Exception message: {0}\nUnsaved note contents: {1}".format(original_exc, note_contents)
         super(NoteSaveError, self).__init__(message)
 
@@ -31,7 +35,7 @@ class NotClient(EvernoteClient):
         get the actual contents of a note based on guid
         '''
         note = self.note_store.getNote(note_guid, True, False, False, False)
-        # Strip tags
+        # Strip html/xml tags
         content = re.sub('<br/>', '\n', note.content)
         content = re.sub('<.*?>', '', content)
         self.logger.debug("Got text content from note guid {0}: {1}".format(note_guid, content))
@@ -43,17 +47,20 @@ class NotClient(EvernoteClient):
         '''
         try:
             # evernote's api is ridiculous
-            filter = NoteFilter(words="intitle:'{0}'".format(title))
-            finder = self.note_store.findNotesMetadata(filter, 0, 1, NotesMetadataResultSpec())
+            notefilter = NoteFilter(words="intitle:'{0}'".format(title))
+            finder = self.note_store.findNotesMetadata(notefilter, 0, 1, NotesMetadataResultSpec())
             self.note_guid = finder.notes[0].guid
             return self.note_guid
         except:
             return False
 
     def check_tags(self, body):
+        '''
+        search the note for 'tags: tag1, tag2'
+        '''
         for line in body.split('\n'):
             if line.startswith('tags:'):
-                return line.split('tags:')[1].replace(' ','').split(',')
+                return line.split('tags:')[1].replace(' ', '').split(',')
 
     def save(self, body, title):
         '''
