@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/not.svg)](http://badge.fury.io/py/not)
+
 ### not
 If anyone is interested in the halfway point between Geeknote & *a random collection of .txt files in $HOME*, meet me in the middle with 'not (note w/o the [e]vernote)', a low-friction, dumb as rocks, evernote based notekeeping thing.
 
