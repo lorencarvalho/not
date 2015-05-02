@@ -10,7 +10,7 @@ import os
 try:
     token = open(os.path.join(os.environ['HOME'], '.not_token')).read()
 except Exception as e:
-    return 'No token! run not-setup! {0}'.format(e)
+    print 'No token! run not-setup! {0}'.format(e)
 
 
 SUFFIX = '.md'
