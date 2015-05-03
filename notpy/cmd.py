@@ -31,7 +31,8 @@ def setup_logging(l):
 
 def setup_client():
     try:
-        return NotClient(token=config.TOKEN, sandbox=False)
+        token = open(config.TOKENPATH).read()
+        return NotClient(token=token, sandbox=False)
     except:
         logger.critical("Unable to setup NotClient\nYou may need to run `not-setup` and try again")
         sys.exit(1)

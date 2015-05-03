@@ -3,8 +3,8 @@
 this module provides not-setup and does
 the oauth stuff for initial access to evernote
 '''
-import config
 import os
+from config import CONSUMER_KEY, CONSUMER_SECRET
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from evernote.api.client import EvernoteClient
 
@@ -58,8 +58,8 @@ def setup():
     https://gist.github.com/inkedmn/5041037
     '''
     client = EvernoteClient(
-                consumer_key = config.CONSUMER_KEY,
-                consumer_secret = config.CONSUMER_SECRET,
+                consumer_key = CONSUMER_KEY,
+                consumer_secret = CONSUMER_SECRET,
                 sandbox = False
             )
     request_token = client.get_request_token('http://localhost:10668')
