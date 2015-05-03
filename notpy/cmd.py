@@ -2,8 +2,6 @@
 '''
 command module for Not
 provides the `not` executable
-hint: 'f' always refers to the temp file
-      'n' is the evernote api wrapper "notpy.Note()"
 '''
 import argparse
 import hashlib
