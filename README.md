@@ -31,6 +31,12 @@ piping via stdin also works for ultimate lazyness:
 to add tags, simply add a line to your note that starts with "tags:" and then a comma separated list
 for example: `tags: these,are,tags`
 
+don't remember the last couple notes you edited? just run
+
+`not ls`
+
+it will return a list of the last 10ish edited notes
+
 * all notes are plaintext
 * no notebook customization, just the default notebook
 * line breaks and html aren't handled that well, sorry

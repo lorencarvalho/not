@@ -71,6 +71,11 @@ def cli():
     not_client = setup_client()
     title = args['title']
 
+    if title == 'ls':
+        notes = not_client.search(ls=True)
+        print '\n'.join([not_client.get_title(guid) for guid in notes])
+        sys.exit(0)
+
     if sys.stdin.isatty():
         # Nothing is being piped in, so open a file and let the user edit it
         with tempfile.NamedTemporaryFile(suffix=config.SUFFIX) as f:

@@ -8,6 +8,7 @@ import logging
 # evernote imports
 from evernote.api.client import EvernoteClient
 from evernote.edam.notestore.ttypes import NoteFilter, NotesMetadataResultSpec
+from evernote.edam.type.ttypes import NoteSortOrder
 import evernote.edam.type.ttypes as Types
 
 
@@ -41,16 +42,27 @@ class NotClient(EvernoteClient):
         self.logger.debug("Got text content from note guid {0}: {1}".format(note_guid, content))
         return content
 
-    def search(self, title):
+    def get_title(self, note_guid):
+        note = self.note_store.getNote(note_guid, True, False, False, False)
+        return note.title
+
+    def search(self, title=None, ls=False):
         '''
-        bumble through evernote's api to find a note
+        bumble through evernote's api to find a note or ten
+        what a terrible method... it either returns a guid or a list of guids
         '''
+        if ls:
+            notefilter = NoteFilter(order=NoteSortOrder.UPDATED)
+            finder = self.note_store.findNotesMetadata(notefilter, 0, 10, NotesMetadataResultSpec())
+            guids = [note.guid for note in finder.notes]
+            return guids
+
         try:
             # evernote's api is ridiculous
             notefilter = NoteFilter(words="intitle:'{0}'".format(title))
             finder = self.note_store.findNotesMetadata(notefilter, 0, 1, NotesMetadataResultSpec())
-            self.note_guid = finder.notes[0].guid
-            return self.note_guid
+            self.note_guid = finder.notes[0].guid  # what am i doing...
+            return self.note_guid  # returning... the ... attribute?
         except:
             return False
 
