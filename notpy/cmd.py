@@ -30,9 +30,12 @@ def setup_logging(l):
 def setup_client():
     try:
         token = open(config.TOKENPATH).read()
-        return NotClient(token=token, sandbox=False)
+        global not_client
+        not_client = NotClient(token=token, sandbox=False)
     except:
         logger.critical("Unable to setup NotClient\nYou may need to run `not-setup` and try again")
+        logger.debug("Path to token file: %s", config.TOKENPATH
+        logger.debug("Contents of token file: %s", token)
         sys.exit(1)
 
 
@@ -43,7 +46,7 @@ def md5sum(f):
     return hashlib.md5(open(f).read()).hexdigest()
 
 
-def save_with_retry(not_client, content, title):
+def save_with_retry(content, title):
     '''
     if you leave your editor open for a while sometimes you
     have to reinstantiate your client
@@ -68,7 +71,7 @@ def cli():
 
     # Do setup stuff
     setup_logging(args['loglevel'])
-    not_client = setup_client()
+    setup_client()
     title = args['title']
 
     if title == 'ls':
@@ -92,7 +95,7 @@ def cli():
             call([config.EDITOR, '+', f.name])
             if md5sum(f.name) != md5:
                 content = open(f.name).read().strip()
-                save_with_retry(not_client, content, title)
+                save_with_retry(content, title)
 
     else:
         # The user is trying to pipe things in through stdin
@@ -104,4 +107,4 @@ def cli():
 
         content += '\n'.join(line for line in sys.stdin)
 
-        save_with_retry(not_client, content, title)
+        save_with_retry(content, title)
