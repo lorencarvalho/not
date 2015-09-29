@@ -34,7 +34,7 @@ def setup_client():
         not_client = NotClient(token=token, sandbox=False)
     except:
         logger.critical("Unable to setup NotClient\nYou may need to run `not-setup` and try again")
-        logger.debug("Path to token file: %s", config.TOKENPATH
+        logger.debug("Path to token file: %s", config.TOKENPATH)
         logger.debug("Contents of token file: %s", token)
         sys.exit(1)
 
