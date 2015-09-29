@@ -57,7 +57,7 @@ def save_with_retry(content, title):
         try:
             not_client.save(content, title=title)
         except NoteSaveError:
-            not_client = setup_client()
+            setup_client()
 
 
 def cli():
