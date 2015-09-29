@@ -3,7 +3,7 @@
 from setuptools import setup
 
 
-reqs = ['evernote==1.24',
+reqs = ['evernote', #==1.24',
         'argparse']
 
 
@@ -18,7 +18,7 @@ setup(name='not',
       description='note without the e(vernote), the quickest dirtiest cli evernote client ever',
       url='http://hullcrushdepth.com',
       license='MIT',
-      version='1.6',
+      version='1.7',
       packages=['notpy'],
       install_requires=reqs,
       entry_points=entry_points,
