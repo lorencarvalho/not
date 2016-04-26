@@ -14,7 +14,16 @@ i just want to scratch down some crap in vi and save it somewhere safe and synce
 `not` and I'm done
 
 ### install
+
+for regular pip install:
+
 `pip install not`
+
+if you are cool, use [pex](https://github.com/pantsbuild/pex)!
+
+`pex not -c not -o ~/bin/not && pex not -c not-setup -o ~/bin/not-setup`
+
+then run the setup script:
 
 `not-setup`
 
