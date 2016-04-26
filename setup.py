@@ -3,26 +3,29 @@
 from setuptools import setup
 
 
-reqs = ['evernote', #==1.24',
-        'bs4',
-        'html2text',
-        'markdown2',
-        'functools32',
-        'argparse']
+reqs = [
+    'evernote',  # ==1.24',
+    'bs4',
+    'html2text',
+    'markdown2',
+    'functools32',
+    'argparse'
+]
 
-
-entry_points = {'console_scripts': [
-                'not = notpy.cmd:cli',
-                'not-setup = notpy.oauth:setup']}
-
+entry_points = {
+    'console_scripts': [
+        'not = notpy.cmd:cli',
+        'not-setup = notpy.oauth:setup',
+    ]
+}
 
 setup(name='not',
       author='Loren Carvalho',
-      author_email='comradeloren[at]gmail.com',
+      author_email='me@loren.pizza',
       description='note without the e(vernote), the quickest dirtiest cli evernote client ever',
-      url='http://hullcrushdepth.com',
+      url='https://loren.pizza',
       license='MIT',
-      version='1.0.1',
+      version='2.0.0',
       packages=['notpy'],
       install_requires=reqs,
       entry_points=entry_points,
