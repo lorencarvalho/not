@@ -4,6 +4,10 @@ from setuptools import setup
 
 
 reqs = ['evernote', #==1.24',
+        'bs4',
+        'html2text',
+        'markdown2',
+        'functools32',
         'argparse']
 
 
