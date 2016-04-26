@@ -60,7 +60,7 @@ def cli():
     def try_first_result(result, title):
         try:
             return result[0]
-        except IndexError:
+        except (IndexError, TypeError):
             log.debug('No note found for title: %s', title)
             return None
 
