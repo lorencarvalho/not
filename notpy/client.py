@@ -87,7 +87,7 @@ class NotClient(EvernoteClient):
         """ if the note exists, update it otherwise create it. """
         try:
             note_guid = self.search(title)
-            if len(note_guid) == 1:
+            if note_guid:
                 note_obj = self.store.getNote(note_guid[0], True, False, False, False)
                 save_method = self.store.updateNote
             else:
