@@ -77,11 +77,11 @@ class NotClient(EvernoteClient):
         if notes:
             return [note.guid for note in finder.notes]
 
-    def check_tags(self, body):
+    def get_tags(self, body):
         """ search the note for 'tags: tag1, tag2' """
         for line in body.splitlines():
             if line.startswith('tags:'):
-                return ' '.join(line.split()[1:]).replace(' ', '')
+                return [tag.strip() for tag in line.partition(':')[2].split(',')]
 
     def save(self, body, title):
         """ if the note exists, update it otherwise create it. """
@@ -95,11 +95,12 @@ class NotClient(EvernoteClient):
                 save_method = self.store.createNote
 
             # look for and attach tags:
-            note_obj.tagNames = self.check_tags(body)
+            note_obj.tagNames = self.get_tags(body)
 
-            # evernotes special markup:
+            # set title
             note_obj.title = title
 
+            # populate content w/evernote special markup
             note_obj.content = str(NotNote(body))
 
             # save new note or update existing
